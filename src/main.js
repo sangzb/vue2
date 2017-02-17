@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import VueResource from 'vue-resource';
 import App from './App.vue';
 import TestComponent from './components/test.vue';
+import UploadComponent from './components/upload.vue';
 
 //开启debug模式
 Vue.config.debug = true;
@@ -24,6 +25,10 @@ const router = new VueRouter({
     {
       path: '/inner',
       component: InnerComponet
+    },
+    {
+      path: '/upload',
+      component: UploadComponent
     }
   ]
 });
