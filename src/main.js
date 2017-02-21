@@ -5,7 +5,8 @@ import App from './App.vue';
 import TestComponent from './components/test.vue';
 import UploadComponent from './components/upload.vue';
 
-
+//载入页面
+import LoginPage from './containers/login.vue';
 
 //开启debug模式
 Vue.config.debug = true;
@@ -20,18 +21,10 @@ const router = new VueRouter({
   mode: 'history',
   base: './',
   routes: [
-    {
-      path: '/test',
-      component: TestComponent
-    },
-    {
-      path: '/inner',
-      component: InnerComponet
-    },
-    {
-      path: '/upload',
-      component: UploadComponent
-    }
+    { path: '/test', component: TestComponent },
+    { path: '/inner', component: InnerComponet },
+    { path: '/upload', component: UploadComponent },
+    { path: '/login', component: LoginPage }
   ]
 });
 
