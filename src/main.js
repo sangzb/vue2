@@ -1,4 +1,5 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
+import './style/semantic/dist/semantic.min.css';
 import Vue from 'vue';
 import VueRouter from "vue-router";
 import VueResource from 'vue-resource';
@@ -7,7 +8,7 @@ import TestComponent from './components/test.vue';
 import UploadComponent from './components/upload.vue';
 
 //载入页面
-import LoginPage from './containers/login.vue';
+import LoginPage from './containers/login/index.vue';
 
 //开启debug模式
 Vue.config.debug = true;
