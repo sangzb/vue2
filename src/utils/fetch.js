@@ -73,14 +73,12 @@ export default function(fetchConfig = {}) {
       headers: headers
     });
 
-
     if (method !== 'get' && method !== 'head') {
       ajaxSettings.body = params instanceof FormData ? params : JSON.stringify(params);
     }
     
     return fetch(url, ajaxSettings).then(jsonResponse).then(function(data) {
-      "use strict";
-      console.log(data);
+      return data;
     });
   };
 }
