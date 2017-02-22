@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Vue from 'vue';
 import VueRouter from "vue-router";
 import VueResource from 'vue-resource';
@@ -15,14 +16,11 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 
-const InnerComponet = { template: '<div><h2>我是第 1 个子页面</h2></div>' };
-
 const router = new VueRouter({
   mode: 'history',
   base: './',
   routes: [
     { path: '/test', component: TestComponent },
-    { path: '/inner', component: InnerComponet },
     { path: '/upload', component: UploadComponent },
     { path: '/login', component: LoginPage }
   ]
