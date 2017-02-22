@@ -1,9 +1,18 @@
+//依赖
 var path = require('path');
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-
+//参数
 var plugins = [];
+//服务器路径
+var publicPath = '/';
+var pagePath = './';
+
 if (process.env.NODE_ENV === 'production') {
+  publicPath = './assets';
+  pagePath = '../';
   plugins.push(
     new webpack.DefinePlugin({
       'process.env': {
@@ -22,6 +31,26 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
+//单独打包css文件
+plugins.push(new ExtractTextPlugin("css/style.css"));
+//打包多个page文件
+plugins.push(
+  new HtmlWebpackPlugin({
+    filename: pagePath + 'index.html',
+    template: './index.ejs',
+    hash: false,
+    inject: 'body',
+    chunks: ['app', 'vendor']
+  }),
+  new HtmlWebpackPlugin({
+    filename: pagePath + 'page.html',
+    template: './page.ejs',
+    hash: false,
+    inject: 'body',
+    chunks: ['page', 'vendor']
+  })
+);
+
 module.exports = {
   entry: {
     // 公共
@@ -30,11 +59,12 @@ module.exports = {
       'bootstrap'
     ],
     // 应用
-    app: ['./src/main.js']
+    app: ['./src/main.js'],
+    page: ['./src/page.js']
   },
   output: {
-    path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
+    path: path.resolve(__dirname, './dist/assets'),
+    publicPath: publicPath,
     filename: '[name].bundle.js'
   },
   module: {
@@ -43,14 +73,14 @@ module.exports = {
       { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader!resolve-url-loader'
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: "css-loader"
+        })
       },
-      {
-        test: /\.scss$/,
-        loader: 'style-loader!css-loader!resolve-url-loader!sass-loader?sourceMap'
-      },
-      {
-        test: /\.(png|jpg|gif|svg)$/,
+      { test: /\.scss$/, loader: 'style-loader!css-loader!resolve-url-loader!sass-loader?sourceMap'},
+      { 
+        test: /\.(png|jpg|gif|svg)$/, 
         loader: 'file-loader',
         options: {
           name: '[name].[ext]?[hash]'
@@ -67,6 +97,9 @@ module.exports = {
     extensions: ['.js', '.jsx', '.coffee', '.html', '.css', '.scss', '.sass']
   },
   devServer: {
+    publicPath: publicPath,
+    hot: true,
+    inline: true,
     historyApiFallback: true,
     noInfo: true
   },
