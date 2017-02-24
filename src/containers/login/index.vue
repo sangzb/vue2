@@ -1,45 +1,92 @@
 <template>
-  <div class='container' id='LoginPage'>
+  <div class="container" id="LoginPage">
 	<form class="ui form">
-	  <div class='field'>
-		<input type="text" name="first-name" placeholder="姓名...">
+	  <div class="ui field" v-bind:class="[username.status]">
+		<input
+			type="text"
+			name="username"
+			placeholder="姓名..."
+			v-model="username.text"
+			v-on:blur="userNameBlur"
+			v-on:focus="inputFocus('username', $event)"
+		/>
 	  </div>
-	  <div class='field'>
-		<input class='six wide column' type="password" name="last-name" placeholder="密码">
+	  <div class="ui field" v-bind:class="[password.status]">
+		<input
+			type="password"
+			name="password"
+			placeholder="密码..."
+			v-model="password.text"
+			v-on:blur="passwordNameBlur"
+			v-on:focus="inputFocus('password', $event)"
+		/>
 	  </div>
 
-	  <button class="ui button primary submitBtn" v-on:click='loginSubmit'>登录</button>
+	  <button class="ui button primary submitBtn" v-on:click="loginSubmit">登录</button>
 	</form>
 
-	<div class='userControl ui two column grid '>
-	  <div class='column'>
-		<a href='#'>用户注册</a>
+	<div class="userControl ui two column grid ">
+	  <div class="column">
+		<a href="#">用户注册</a>
 	  </div>
-	  <div class='column right'>
-		<a href='#'>忘记密码</a>
+	  <div class="column right">
+		<a href="#">忘记密码</a>
 	  </div>
 	</div>
 
-	<div v-if='isLoading'>
-	  <loading></loading>
+	<div v-if="isLoading || process">
+	  <maskComponent v-bind:message="message"></maskComponent>
 	</div>
   </div>
 </template>
 
 <script>
-  import loading from '../../components/loading/index.vue';
+  import maskComponent from '../../components/mask/index.vue';
   import { mapGetters } from 'vuex';
   export default {
 	//components
 	components: {
-	  loading
+	  maskComponent
 	},
 	//props & method
 	data() {
+	  let that = this;
 	  return {
+		process: false,
+		message: '',
+		username: {
+		  text: '',
+		  status: ''
+		},
+		password: {
+		  text: '',
+		  status: ''
+		},
 		loginSubmit(e) {
 		  e.preventDefault();
-		  console.log('submit');
+		  if (that.username.text === '' || that.password.text === '') {
+			that.message = '请输入用户名和密码';
+			that.process = true;
+		  }else {
+			that.$store.dispatch('userLogin', { userName: that.username.text, pasword: that.password.text } );
+		  }
+		},
+		userNameBlur(e) {
+		  e.preventDefault();
+		  if (that.username.text.length) {
+
+		  }else {
+			that.username.status = 'error';
+		  }
+		},
+		passwordNameBlur(e) {
+		  e.preventDefault();
+		  if (that.password.text.length === 0) {
+			that.password.status = 'error';
+		  }
+		},
+		inputFocus(type, e) {
+		  that[type].status = '';
 		}
 	  }
 	},
@@ -54,6 +101,6 @@
   }
 </script>
 
-<style lang='scss'>
-  @import './index.scss';
+<style lang="scss">
+  @import "./index.scss";
 </style>

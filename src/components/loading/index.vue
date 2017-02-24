@@ -1,7 +1,7 @@
 <template>
   <div id="LoadingMaskComponent">
     {{message}}
-    <div v-if="message" class='container'>
+    <div v-if="message && message.length" class='container'>
       <span>{{message}}</span>
     </div>
     <div v-else class='container'>
