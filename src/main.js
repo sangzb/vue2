@@ -3,11 +3,12 @@ import './style/semantic/dist/semantic.min.css';
 import Vue from 'vue';
 import VueRouter from "vue-router";
 import VueResource from 'vue-resource';
+import store from './vuex/store';
 import App from './App.vue';
-import TestComponent from './components/test.vue';
 import UploadComponent from './components/upload.vue';
 
 //载入页面
+import TestPage from './containers/test/index.vue';
 import LoginPage from './containers/login/index.vue';
 
 //开启debug模式
@@ -21,15 +22,18 @@ const router = new VueRouter({
   mode: 'history',
   base: './',
   routes: [
-    { path: '/test', component: TestComponent },
-    { path: '/upload', component: UploadComponent },
-    { path: '/login', component: LoginPage }
+    { path: '/test', component: TestPage },
+    { path: '/login', component: LoginPage },
+
+    { path: '/upload', component: UploadComponent }
+
   ]
 });
 
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 });
 
