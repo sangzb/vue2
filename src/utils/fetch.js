@@ -2,6 +2,14 @@ import fetch from 'isomorphic-fetch';
 
 export default function(fetchConfig = {}) {
 
+  function request(commit, action) {
+    commit(`REQUEST_${fetchConfig.type}`, action);
+  }
+
+  function response(commit, action) {
+    commit(`RECIEVE_${fetchConfig.type}`, action);
+  }
+
   function removeEmptyPair(params) {
     params = params || {};
     let newObj = {};
@@ -72,13 +80,22 @@ export default function(fetchConfig = {}) {
       //credentials: 'include',
       headers: headers
     });
-
     if (method !== 'get' && method !== 'head') {
       ajaxSettings.body = params instanceof FormData ? params : JSON.stringify(params);
     }
-    
-    return fetch(url, ajaxSettings).then(jsonResponse).then(function(data) {
-      return data;
-    });
+
+    if (fetchConfig.type) {
+      return function({ commit }, action) {
+        request(commit, action);
+        return fetch(url, ajaxSettings).then(jsonResponse).then(function(data) {
+          response( commit, data);
+          return data;
+        });
+      };
+    }else {
+      return fetch(url, ajaxSettings).then(jsonResponse).then(function(data) {
+        return data;
+      });
+    }
   };
 }
