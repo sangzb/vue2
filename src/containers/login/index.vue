@@ -8,7 +8,7 @@
 		<input class='six wide column' type="password" name="last-name" placeholder="密码">
 	  </div>
 
-	  <button class="ui button primary submitBtn" type="submit">登录</button>
+	  <button class="ui button primary submitBtn" v-on:click='loginSubmit'>登录</button>
 	</form>
 
 	<div class='userControl ui two column grid '>
@@ -18,30 +18,42 @@
 	  <div class='column right'>
 		<a href='#'>忘记密码</a>
 	  </div>
+	</div>
 
+	<div v-if='isLoading'>
+	  <loading></loading>
 	</div>
   </div>
 </template>
 
 <script>
-
+  import loading from '../../components/loading/index.vue';
+  import { mapGetters } from 'vuex';
+  export default {
+	//components
+	components: {
+	  loading
+	},
+	//props & method
+	data() {
+	  return {
+		loginSubmit(e) {
+		  e.preventDefault();
+		  console.log('submit');
+		}
+	  }
+	},
+	//state props
+	computed: mapGetters({
+	  isLoading: 'getIsLoading'
+	}),
+	//life cycle
+	mounted() {
+	  console.log('login page inited');
+	}
+  }
 </script>
 
 <style lang='scss'>
-  #LoginPage {
-	padding-top: 10%;
-	.userControl {
-	  padding-top: 10% !important;
-	  .right {
-		text-align: right;
-	  }
-	}
-  }
-
-  .submitBtn {
-	color: #ffffff;
-	background-color: #00b3ee;
-	display: flex;
-	width: 100%;
-  }
+  @import './index.scss';
 </style>
