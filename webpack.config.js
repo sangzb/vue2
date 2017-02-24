@@ -11,7 +11,7 @@ var publicPath = '/';
 var pagePath = './';
 
 if (process.env.NODE_ENV === 'production') {
-  publicPath = './assets';
+  publicPath = 'http://45.76.210.139/assets';
   pagePath = '../';
   plugins.push(
     new webpack.DefinePlugin({
