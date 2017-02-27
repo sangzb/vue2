@@ -34,6 +34,7 @@
       isLoading: 'getIsLoading'
     }),
     mounted() {
+      console.log(this.location);
       this.$store.dispatch('getInfo', { type: 'GET_INFO' })
     }
 

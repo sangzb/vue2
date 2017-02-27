@@ -1,9 +1,9 @@
 <template>
   <div id="LoadingMaskComponent">
-    <div v-if="message && message.length" class='container'>
-      <span class="text">{{message}}</span>
+    <div v-if="message && message.length" class='container' >
+      <span class="text" v-bind:class="className">{{message}}</span>
     </div>
-    <div v-else class='container'>
+    <div v-else class='container' >
       <div class='loadingImage'></div>
     </div>
   </div>
@@ -18,7 +18,7 @@
         author: 'sangzb'
       }
     },
-    props: ['message'],
+    props: ['message', 'className'],
     computed: mapGetters({
       isLoading: 'getIsLoading'
     }),

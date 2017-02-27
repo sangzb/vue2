@@ -35,12 +35,15 @@
 	</div>
 
 	<div v-if="isLoading || process">
-	  <maskComponent v-bind:message="message"></maskComponent>
+	  <maskComponent
+		  v-bind:message="message"
+		  v-bind:className="maskdisplay"
+	  ></maskComponent>
 	</div>
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import maskComponent from '../../components/mask/index.vue';
   import { mapGetters } from 'vuex';
   export default {
@@ -53,6 +56,7 @@
 	  let that = this;
 	  return {
 		process: false,
+		maskdisplay: '',
 		message: '',
 		username: {
 		  text: '',
@@ -67,8 +71,22 @@
 		  if (that.username.text === '' || that.password.text === '') {
 			that.message = '请输入用户名和密码';
 			that.process = true;
+			that.maskdisplay = 'showAnimate';
+			hideMask.bind(that)();
 		  }else {
-			that.$store.dispatch('userLogin', { userName: that.username.text, pasword: that.password.text } );
+			that.$store.dispatch('userLogin', { userName: that.username.text, pasword: that.password.text } ).then((data) => {
+			  if (data && data.length) {
+				  console.log(that.$router.push({
+					path: '/test',
+					query: { test: '123' }
+				  }));
+			  }else {
+				that.message = '登录失败';
+				that.process = true;
+				that.maskdisplay = 'showAnimate';
+				hideMask.bind(that)(true);
+			  }
+			});
 		  }
 		},
 		userNameBlur(e) {
@@ -98,6 +116,33 @@
 	mounted() {
 	  console.log('login page inited');
 	}
+  }
+
+
+
+  function hideMask(noAnimate) {
+	let _hideFunc = new Promise((resolve, reject) => {
+		setTimeout(() => {
+		  this.maskdisplay = 'hideAnimate';
+		  resolve('success');
+		}, 1000);
+	});
+	let _removeFunc = new Promise((resolve, reject) => {
+		setTimeout(() => {
+		  this.process = false;
+		  resolve('success');
+		}, 2000);
+	});
+
+	_hideFunc.then(() => {
+	  if (noAnimate) {
+		this.process = false;
+	  }else {
+		_removeFunc.then(() => {
+		  console.log('---remove---');
+		});
+	  }
+	});
   }
 </script>
 
