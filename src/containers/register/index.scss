@@ -1,3 +1,61 @@
+@import "../../style/var.scss";
 #RegisterPage {
   padding-top: 10%;
+  .userNameContainer {
+    position: relative;
+    .userNameTip {
+      position: absolute;
+      height: 35px;
+      width: 35px;
+      right: 0;
+      top: 0;
+      z-index: 999;
+      background: url('./3.gif') no-repeat center center;
+      background-size: 50%;
+    }
+
+    .username {
+      position: absolute;
+      line-height: 37px;
+      top: 0;
+      right: 5%;
+      color: $font-color;
+    }
+
+    .username-warn-enter {
+      opacity: 0;
+      right: 15%;
+    }
+
+    .username-warn-enter-active {
+      transition: all .5s;
+    }
+
+    .username-warn-leave {
+    }
+
+    .username-warn-leave-active {
+      transition: all .5s;
+      right: 15%;
+      opacity: 0;
+    }
+
+  }
+
+  .mask-enter {
+    opacity: 0;
+  }
+
+  .mask-enter-active {
+    transition: all 1s;
+  }
+
+  .mask-leave {
+
+  }
+
+  .mask-leave-active {
+    opacity: 0;
+    transition: all 1s;
+  }
 }

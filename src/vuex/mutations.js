@@ -30,9 +30,9 @@ export default {
   },
 
   REQUEST_USER_EXIST (state, param) {
-    state.isLoading = true;
+    //todo
   },
   RECIEVE_USER_EXIST (state, param) {
-    state.isLoading = false;
+    //todo
   }
 };

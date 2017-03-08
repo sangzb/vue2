@@ -30,4 +30,12 @@ export const userRegister = ({ commit }, params ) => {
   })(params)({ commit }, params);
 };
 
+export const userExist = ({ commit }, params ) => {
+  return fetch({
+    url: `${C('API_URI')}/user`,
+    method: 'get',
+    type: 'USER_EXIST'
+  })(params)({ commit }, params);
+};
+
 

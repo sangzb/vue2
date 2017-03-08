@@ -27,7 +27,7 @@
 
 	<div class="userControl ui two column grid ">
 	  <div class="column">
-		<a href="#">用户注册</a>
+		<a href="/register">用户注册</a>
 	  </div>
 	  <div class="column right">
 		<a href="#">忘记密码</a>

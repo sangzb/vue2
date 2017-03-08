@@ -1,7 +1,7 @@
 <template>
   <div class="container" id="RegisterPage">
 	<form class="ui form">
-	  <div class="ui field" v-bind:class="[username.status]">
+	  <div class="ui field userNameContainer" v-bind:class="[username.status]">
 		<input
 			type="text"
 			name="username"
@@ -10,6 +10,14 @@
 			v-on:blur="userNameBlur"
 			v-on:focus="inputFocus('username', $event)"
 		/>
+		<!--等待效果-->
+		<template v-if="username.checking">
+		  <span class="userNameTip"></span>
+		</template>
+		<!--错误提示-->
+		<transition name="username-warn">
+		  <p class="warn username" v-if="username.warn.show">{{ username.warn.text }}</p>
+		</transition>
 	  </div>
 	  <div class="ui field" v-bind:class="[password.status]">
 		<input
@@ -35,34 +43,40 @@
 	  <button class="ui button primary submitBtn" v-on:click="loginSubmit">注册</button>
 	</form>
 
-	<div v-if="isLoading || process">
-	  <maskComponent
-		  v-bind:message="message"
-		  v-bind:className="maskdisplay"
-	  ></maskComponent>
-	</div>
+	  <transition name="mask">
+		<template v-if="isLoading || process">
+		  <loadingComponent
+			  v-bind:message="message"
+		  ></loadingComponent>
+		</template>
+	  </transition>
+
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import maskComponent from '../../components/mask/index.vue';
+  import loadingComponent from '../../components/loading/index.vue';
   import { mapGetters } from 'vuex';
   import Vue from 'vue';
   export default {
 	//components
 	components: {
-	  maskComponent
+	  loadingComponent
 	},
 	//props & method
 	data() {
 	  let that = this;
 	  return {
 		process: false,
-		maskdisplay: '',
 		message: '',
 		username: {
 		  text: '',
-		  status: ''
+		  status: '',
+		  checking: false,
+		  warn: {
+			show: false,
+			text: '用户名已经存在'
+		  }
 		},
 		password: {
 		  text: '',
@@ -74,13 +88,23 @@
 		},
 		loginSubmit(e) {
 		  e.preventDefault();
-		  if (that.username.text === '' || that.password.text === '') {
-			that.message = '请输入用户名和密码';
+		  const { dispatch } = that.$store;
+		  if (that.username.text === '' || that.password.text === '' || that.repeatpwd.text === '') {
+			that.message = '请输入必填内容';
 			that.process = true;
-			that.maskdisplay = 'showAnimate';
-			hideMask.bind(that)();
+
+			setTimeout(() => {
+			  that.process = false;
+			}, 1000);
+		  }else if (that.password.text !== that.repeatpwd.text) {
+			that.message = '密码不相同';
+			that.process = true;
+
+			setTimeout(() => {
+			  that.process = false;
+			}, 1000);
 		  }else {
-			that.$store.dispatch('userLogin', { userName: that.username.text, pasword: that.password.text } ).then((data) => {
+			dispatch('userLogin', { userName: that.username.text, pasword: that.password.text }).then((data) => {
 			  if (data && data.length) {
 				  console.log(that.$router.push({
 					path: '/test',
@@ -89,16 +113,30 @@
 			  }else {
 				that.message = '登录失败';
 				that.process = true;
-				that.maskdisplay = 'showAnimate';
-				hideMask.bind(that)(true);
+
+				setTimeout(() => {
+				  that.process = false;
+				}, 1000);
 			  }
 			});
 		  }
 		},
 		userNameBlur(e) {
+		  const { dispatch } = that.$store;
 		  e.preventDefault();
 		  if (that.username.text.length) {
-
+			that.username.checking = true;
+			dispatch('userExist', { userName: that.username.text }).then((data) => {
+			  that.username.checking = false;
+			  if (data.data && data.data.length) {
+				that.username.warn.show = true;
+				that.username.status = 'error';
+				
+				setTimeout(() => {
+				  that.username.warn.show = false;
+				}, 2000);
+			  }
+			});
 		  }else {
 			that.username.status = 'error';
 		  }
@@ -124,32 +162,6 @@
 	}
   }
 
-
-
-  function hideMask(noAnimate) {
-	let _hideFunc = new Promise((resolve, reject) => {
-		setTimeout(() => {
-		  this.maskdisplay = 'hideAnimate';
-		  resolve('success');
-		}, 1000);
-	});
-	let _removeFunc = new Promise((resolve, reject) => {
-		setTimeout(() => {
-		  this.process = false;
-		  resolve('success');
-		}, 2000);
-	});
-
-	_hideFunc.then(() => {
-	  if (noAnimate) {
-		this.process = false;
-	  }else {
-		_removeFunc.then(() => {
-		  console.log('---remove---');
-		});
-	  }
-	});
-  }
 </script>
 
 <style lang="scss">
