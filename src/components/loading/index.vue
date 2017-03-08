@@ -1,8 +1,7 @@
 <template>
   <div id="LoadingMaskComponent">
-    {{message}}
     <div v-if="message && message.length" class='container'>
-      <span>{{message}}</span>
+      <span class="text">{{message}}</span>
     </div>
     <div v-else class='container'>
       <div class='loadingImage'></div>
@@ -23,7 +22,11 @@
       isLoading: 'getIsLoading'
     }),
     mounted() {
-      console.log('loading......')
+      let $ = window.jQuery;
+      let ww = document.documentElement.clientWidth;
+      let wh = document.documentElement.clientHeight;
+      let text = $('.container span.text');
+      text.css({ left: (ww - text.outerWidth()) / 2, top: (wh - text.outerHeight()) / 2 });
     }
   }
 </script>
