@@ -1,5 +1,5 @@
 //import 'bootstrap/dist/css/bootstrap.min.css';
-import './style/semantic/dist/semantic.min.css';
+import 'semantic-ui-css/semantic.min.css';
 import Vue from 'vue';
 import VueRouter from "vue-router";
 import VueResource from 'vue-resource';
