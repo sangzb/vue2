@@ -3,12 +3,12 @@
 	<form class="ui form">
 	  <div class="ui field userNameContainer" v-bind:class="[username.status]">
 		<input
-			type="text"
-			name="username"
-			placeholder="姓名..."
-			v-model="username.text"
-			v-on:blur="userNameBlur"
-			v-on:focus="inputFocus('username', $event)"
+          type="text"
+          name="username"
+          placeholder="姓名..."
+          v-model="username.text"
+          v-on:blur="userNameBlur"
+          v-on:focus="inputFocus('username', $event)"
 		/>
 		<!--等待效果-->
 		<template v-if="username.checking">
@@ -21,22 +21,22 @@
 	  </div>
 	  <div class="ui field" v-bind:class="[password.status]">
 		<input
-			type="password"
-			name="password"
-			placeholder="密码..."
-			v-model="password.text"
-			v-on:blur="passwordNameBlur('password', $event)"
-			v-on:focus="inputFocus('password', $event)"
+          type="password"
+          name="password"
+          placeholder="密码..."
+          v-model="password.text"
+          v-on:blur="passwordNameBlur('password', $event)"
+          v-on:focus="inputFocus('password', $event)"
 		/>
 	  </div>
 	  <div class="ui field" v-bind:class="[repeatpwd.status]">
 		<input
-			type="password"
-			name="repeatpwd"
-			placeholder="重复密码..."
-			v-model="repeatpwd.repeatpwd"
-			v-on:blur="passwordNameBlur('repeatpwd', $event)"
-			v-on:focus="inputFocus('repassword', $event)"
+          type="password"
+          name="repeatpwd"
+          placeholder="重复密码..."
+          v-model="repeatpwd.text"
+          v-on:blur="passwordNameBlur('repeatpwd', $event)"
+          v-on:focus="inputFocus('repeatpwd', $event)"
 		/>
 	  </div>
 
@@ -45,8 +45,7 @@
 
 	  <transition name="mask">
 		<template v-if="isLoading || process">
-		  <loadingComponent
-			  v-bind:message="message"
+		  <loadingComponent v-bind:message="message"
 		  ></loadingComponent>
 		</template>
 	  </transition>
@@ -104,7 +103,7 @@
 			  that.process = false;
 			}, 1000);
 		  }else {
-			dispatch('userLogin', { userName: that.username.text, pasword: that.password.text }).then((data) => {
+			dispatch('userRegister', { userName: that.username.text, pasword: that.password.text }).then((data) => {
 			  if (data && data.length) {
 				  console.log(that.$router.push({
 					path: '/test',
@@ -143,8 +142,12 @@
 		},
 		passwordNameBlur(type, e) {
 		  e.preventDefault();
-		  if (that.password.text.length === 0) {
+		  if (!that.password.text.length) {
 			that.password.status = 'error';
+		  }
+		  console.log(that.repeatpwd.text)
+		  if (!that.repeatpwd.text.length || that.repeatpwd.text !== that.password.text) {
+			that.repeatpwd.status = 'error';
 		  }
 		},
 		inputFocus(type, e) {
