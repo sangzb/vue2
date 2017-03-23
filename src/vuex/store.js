@@ -3,8 +3,8 @@ import Vuex from 'vuex';
 
 //引入getters与actions
 import * as getters from './getters';
-import * as actions from './actions';
-import mutations from './mutations';
+import actions from './actions/';
+import mutations from './mutations/index.js';
 
 //注册vuex
 Vue.use(Vuex);
