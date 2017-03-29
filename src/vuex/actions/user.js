@@ -35,4 +35,13 @@ export const userExist = ({ commit }, params ) => {
   })(params)({ commit }, params);
 };
 
+export const uploadAvartar = ({ commit }, params) => {
+  console.log(params,'--sd-fg-f-dsf-g-fd-s-dfg---')
+  return fetch({
+    url: C('API_URI') + '/upload',
+    method: 'post',
+    type: 'AVATAR_UPLOAD'
+  })(params)({ commit }, params);
+};
+
 

@@ -25,5 +25,12 @@ export default {
   },
   RECIEVE_USER_EXIST (state, param) {
     //todo
+  },
+
+  REQUEST_AVATAR_UPLOAD (state, param) {
+    state.isLoading = true;
+  },
+  RECIEVE_AVATAR_UPLOAD (state, param) {
+    state.isLoading = false;
   }
 };

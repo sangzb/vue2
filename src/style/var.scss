@@ -1,1 +1,18 @@
 $font-color: #333;
+
+.mask-enter {
+  opacity: 0;
+}
+
+.mask-enter-active {
+  transition: all 1s;
+}
+
+.mask-leave {
+
+}
+
+.mask-leave-active {
+  opacity: 0;
+  transition: all 1s;
+}

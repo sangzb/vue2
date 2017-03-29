@@ -11,7 +11,7 @@ import { location } from './utils';
 import TestPage from './containers/test/index.vue';
 import LoginPage from './containers/login/index.vue';
 import RegisterPage from './containers/register/index.vue';
-
+import ProfilePage from './containers/profile/index.vue';
 import UploadComponent from './components/upload.vue';
 
 //开启debug模式
@@ -28,6 +28,7 @@ const router = new VueRouter({
     { path: '/test', component: TestPage },
     { path: '/login', component: LoginPage },
     { path: '/register', component: RegisterPage },
+    { path: '/profile', component: ProfilePage },
     { path: '/upload', component: UploadComponent }
   ]
 });

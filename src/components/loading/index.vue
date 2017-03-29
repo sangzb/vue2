@@ -18,9 +18,6 @@
       }
     },
     props: ['message'],
-    computed: mapGetters({
-      isLoading: 'getIsLoading'
-    }),
     mounted() {
       let $ = window.jQuery;
       let ww = document.documentElement.clientWidth;
