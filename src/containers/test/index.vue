@@ -27,7 +27,7 @@
           console.log('count');
           that.$store.dispatch('add', { test: 123 });
         }
-      }
+      };
     },
     computed: mapGetters({
       count: 'getCount',

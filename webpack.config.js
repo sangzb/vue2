@@ -11,7 +11,7 @@ var publicPath = '/';
 var pagePath = './';
 
 if (process.env.NODE_ENV === 'production') {
-  publicPath = 'http://45.76.210.139/assets';
+  publicPath = 'http://45.77.22.206/assets';
   pagePath = '../';
   plugins.push(
     new webpack.DefinePlugin({
@@ -30,7 +30,12 @@ if (process.env.NODE_ENV === 'production') {
     })
   );
 }
-
+//打包公用部分
+plugins.push(new webpack.optimize.CommonsChunkPlugin({
+  name: 'common',
+  filename: 'common.js',
+  minChunks: 2
+}));
 //单独打包css文件
 plugins.push(new ExtractTextPlugin("css/style.css"));
 //打包多个page文件
@@ -40,14 +45,14 @@ plugins.push(
     template: './index.ejs',
     hash: false,
     inject: 'body',
-    chunks: ['app', 'vendor']
+    chunks: ['vendor', 'common', 'app']
   }),
   new HtmlWebpackPlugin({
     filename: pagePath + 'page.html',
     template: './page.ejs',
     hash: false,
     inject: 'body',
-    chunks: ['page', 'vendor']
+    chunks: ['vendor', 'common', 'page']
   })
 );
 
@@ -93,7 +98,7 @@ module.exports = {
       { test: /\.scss$/, loader: 'style-loader!css-loader!resolve-url-loader!sass-loader?sourceMap'},
       { 
         test: /\.(png|jpg|gif|svg)$/, 
-        loader: 'file-loader',
+        loader: 'url-loader?limit=5000!file-loader',
         options: {
           name: '[name].[ext]?[hash]'
         }

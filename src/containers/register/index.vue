@@ -127,6 +127,7 @@
 			that.username.checking = true;
 			dispatch('userExist', { userName: that.username.text }).then((data) => {
 			  that.username.checking = false;
+			  console.log(data,'----')
 			  if (data.data && data.data.length) {
 				that.username.warn.show = true;
 				that.username.status = 'error';
@@ -145,7 +146,6 @@
 		  if (!that.password.text.length) {
 			that.password.status = 'error';
 		  }
-		  console.log(that.repeatpwd.text)
 		  if (!that.repeatpwd.text.length || that.repeatpwd.text !== that.password.text) {
 			that.repeatpwd.status = 'error';
 		  }

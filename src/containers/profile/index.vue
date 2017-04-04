@@ -24,8 +24,35 @@
           v-model="birthday.date"
           readonly="readonly"
         />
-
       </div>
+      <div class="field inline">
+        <label>性别：</label>
+        <div class="ui radio checkbox">
+          <input type="radio" name="gender" value="male" v-model="gender">
+          <label>男</label>
+        </div>
+
+        <div class="ui radio checkbox">
+          <input type="radio" name="gender" value="female" v-model="gender">
+          <label>女</label>
+        </div>
+      </div>
+      <div class="field inline">
+        <label>兴趣爱好：</label>
+        <div class="ui checkbox">
+          <input type="checkbox" name="hobby" value="reading" v-model="hobby">
+          <label>阅读</label>
+        </div>
+        <div class="ui checkbox">
+          <input type="checkbox" name="hobby" value="travel" v-model="hobby">
+          <label>旅行</label>
+        </div>
+        <div class="ui checkbox">
+          <input type="checkbox" name="hobby" value="otaku" v-model="hobby">
+          <label>宅</label>
+        </div>
+      </div>
+        <button class="ui button primary submit">提交</button>
     </div>
     <transition name="mask">
       <template v-if="isLoading || process">
@@ -52,15 +79,17 @@
         message: '',
         process: false,
         avatar: {
-          src: './empty.png'
+          src: require('./empty.png')
         },
         nickname: {
           text: '',
           status: 0
         },
         birthday: {
-          date: '2017-02-03'
+          date: '2017-01-01'
         },
+        gender: 'male',
+        hobby: [],
         changeAvatar(e) {
           let files = e.currentTarget.files;
           let img = files[0];
@@ -71,7 +100,7 @@
               if (data && data.src) {
                 that.avatar.src = data.src;
               }
-            })
+            });
           }else {
             that.message = '请选择图片文件';
             that.process = true;
@@ -80,7 +109,7 @@
             }, 1000);
           }
         }
-      }
+      };
     },
     computed: mapGetters({
       isLoading: 'getIsLoading'
@@ -88,7 +117,7 @@
     mounted() {
       //monted
     }
-  }
+  };
 </script>
 
 <style lang="scss">
